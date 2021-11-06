@@ -1,0 +1,169 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Connection.cs" type="Script" id=1]
+[ext_resource path="res://Connect.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game.tscn" type="PackedScene" id=3]
+[ext_resource path="res://BestOf.tscn" type="PackedScene" id=4]
+[ext_resource path="res://disbutton.cs" type="Script" id=5]
+[ext_resource path="res://ResultsScreen.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Messages/Connecting.tres" type="Texture" id=7]
+[ext_resource path="res://default.tres" type="Theme" id=8]
+
+[sub_resource type="Animation" id=1]
+resource_name = "ConnectionFail"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("StatusMessage:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("StatusMessage:percent_visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("StatusMessage:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+
+[node name="Connection" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 8 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BestOf" parent="." instance=ExtResource( 4 )]
+visible = false
+margin_left = 306.0
+margin_top = 138.0
+margin_right = 376.0
+margin_bottom = 162.0
+
+[node name="Connect" parent="." instance=ExtResource( 2 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -174.082
+margin_top = 82.5277
+margin_right = 145.918
+margin_bottom = 162.528
+
+[node name="toConnect" parent="Connect" index="1"]
+script = ExtResource( 5 )
+
+[node name="toHost" parent="Connect" index="2"]
+script = ExtResource( 5 )
+
+[node name="UPNP\?" parent="Connect" index="3"]
+script = ExtResource( 5 )
+
+[node name="Game" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+reset_on_save = false
+anims/ConnectionFail = SubResource( 1 )
+anims/RESET = SubResource( 2 )
+
+[node name="StatusMessage" type="RichTextLabel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -68.0
+margin_top = -3.0
+margin_right = 86.0
+margin_bottom = 15.0
+text = "Failed to connect..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResultsScreen" parent="." instance=ExtResource( 6 )]
+visible = false
+
+[node name="HeartBeat" type="Timer" parent="."]
+wait_time = 0.8
+
+[node name="Disconnect" type="Button" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -138.394
+margin_top = -61.6204
+margin_right = -54.3943
+margin_bottom = -41.6204
+theme = ExtResource( 8 )
+text = "Disconnect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Connecting" type="TextureRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -254.0
+margin_top = -133.0
+margin_right = 258.0
+margin_bottom = 123.0
+texture = ExtResource( 7 )
+
+[connection signal="_Resolve" from="." to="Game" method="_Resolve"]
+[connection signal="_check" from="." to="Game" method="_check"]
+[connection signal="_dc" from="." to="Game" method="_dc"]
+[connection signal="_reset" from="." to="Game" method="_reset"]
+[connection signal="_roundstart" from="." to="Game" method="_on_roundstart"]
+[connection signal="_set_bestof" from="." to="BestOf" method="_on_set_bestof"]
+[connection signal="_send_many" from="BestOf" to="." method="_send_many"]
+[connection signal="_set_bestof" from="BestOf" to="Game" method="_on_set_bestof"]
+[connection signal="pressed" from="BestOf/Accept" to="." method="_start"]
+[connection signal="pressed" from="BestOf/Accept" to="." method="_send" binds= [ 40 ]]
+[connection signal="text_changed" from="Connect/Address" to="." method="_on_Address_text_entered"]
+[connection signal="pressed" from="Connect/toConnect" to="." method="_on_toConnect_pressed"]
+[connection signal="pressed" from="Connect/toHost" to="." method="_on_toHost_pressed"]
+[connection signal="toggled" from="Connect/UPNP?" to="." method="_on_UPNP_toggled"]
+[connection signal="text_changed" from="Connect/Control/PortEdit" to="." method="_on_PortEdit_text_entered"]
+[connection signal="_disp_results" from="Game" to="." method="_disp_results"]
+[connection signal="_result" from="Game" to="ResultsScreen/TextureRect" method="_on_result"]
+[connection signal="_send" from="Game" to="." method="_send"]
+[connection signal="pressed" from="ResultsScreen/Rematch" to="." method="_rematch"]
+[connection signal="timeout" from="HeartBeat" to="." method="_on_Heartbeat"]
+[connection signal="pressed" from="Disconnect" to="." method="_disconnect"]
+
+[editable path="BestOf"]
+[editable path="Connect"]
+[editable path="ResultsScreen"]

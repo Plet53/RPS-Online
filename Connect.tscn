@@ -1,0 +1,113 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://default.tres" type="Theme" id=1]
+
+[node name="Connect" type="Control"]
+margin_right = 320.0
+margin_bottom = 80.0
+mouse_filter = 1
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Address" type="LineEdit" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.504
+margin_top = -30.0554
+margin_right = 50.4962
+margin_bottom = -6.05537
+placeholder_text = "Enter IP address of host"
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="toConnect" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 59.0885
+margin_top = -25.3316
+margin_right = 123.089
+margin_bottom = -5.3316
+action_mode = 0
+text = "Connect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="toHost" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 80.1966
+margin_top = 6.16298
+margin_right = 122.197
+margin_bottom = 26.163
+action_mode = 0
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UPNP\?" type="CheckBox" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -41.3976
+margin_top = 3.67844
+margin_right = 57.6028
+margin_bottom = 27.6784
+hint_tooltip = "Establish a port mapping to the current machine using UPNP. UPNP must be enabled on your router, and your selected port must not already be mapped to another internal IP address."
+text = "Use UPNP?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -145.632
+margin_top = -0.406677
+margin_right = -50.6316
+margin_bottom = 31.5933
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Port" type="RichTextLabel" parent="Control"]
+anchor_right = 0.5
+margin_left = -0.0118713
+margin_top = 8.25847
+margin_right = 37.9881
+margin_bottom = 24.2585
+tab_size = 2
+text = "Port:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PortEdit" type="LineEdit" parent="Control"]
+anchor_left = 0.4
+anchor_right = 0.5
+margin_left = -3.38617
+margin_top = 3.97473
+margin_right = 54.6138
+margin_bottom = 27.9747
+text = "7777"
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}

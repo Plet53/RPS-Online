@@ -1,0 +1,124 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Buttons/rock.png" type="Texture" id=1]
+[ext_resource path="res://Buttons/paper.png" type="Texture" id=2]
+[ext_resource path="res://Buttons/scissors.png" type="Texture" id=3]
+[ext_resource path="res://button.tscn" type="PackedScene" id=4]
+[ext_resource path="res://RPS.cs" type="Script" id=5]
+
+[node name="Game" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+mouse_filter = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rock" parent="." instance=ExtResource( 4 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -310.535
+margin_top = -52.8571
+margin_right = -310.535
+margin_bottom = -52.8571
+
+[node name="TextureRect" parent="Rock/TextureButton" index="0"]
+texture = ExtResource( 1 )
+
+[node name="Paper" parent="." instance=ExtResource( 4 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.1837
+margin_top = -53.801
+margin_right = -64.1837
+margin_bottom = -53.801
+
+[node name="TextureRect" parent="Paper/TextureButton" index="0"]
+texture = ExtResource( 2 )
+
+[node name="Scissors" parent="." instance=ExtResource( 4 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 165.252
+margin_top = -56.2651
+margin_right = 165.252
+margin_bottom = -56.2651
+
+[node name="TextureRect" parent="Scissors/TextureButton" index="0"]
+texture = ExtResource( 3 )
+
+[node name="ScoreLabel" type="RichTextLabel" parent="."]
+margin_left = 15.0
+margin_top = 13.0
+margin_right = 125.0
+margin_bottom = 30.0
+tab_size = 2
+text = "Record: 0-0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LocalLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -96.6326
+margin_top = -150.265
+margin_right = 76.3674
+margin_bottom = -110.265
+text = "You played: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoteLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -95.8776
+margin_top = -112.0
+margin_right = 58.1224
+margin_bottom = -72.0
+text = "They played: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Send" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -39.2861
+margin_top = 101.022
+margin_right = 42.7139
+margin_bottom = 121.022
+text = "Send Move"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="_set_state" from="." to="Rock/TextureButton" method="_on_set_state"]
+[connection signal="_set_state" from="." to="Paper/TextureButton" method="_on_set_state"]
+[connection signal="_set_state" from="." to="Scissors/TextureButton" method="_on_set_state"]
+[connection signal="pressed" from="Rock/TextureButton" to="." method="_on_Move_pressed" binds= [ 10, "Rock." ]]
+[connection signal="pressed" from="Paper/TextureButton" to="." method="_on_Move_pressed" binds= [ 11, "Paper." ]]
+[connection signal="pressed" from="Scissors/TextureButton" to="." method="_on_Move_pressed" binds= [ 12, "Scissors." ]]
+[connection signal="pressed" from="Send" to="." method="_on_send_pressed"]
+
+[editable path="Rock"]
+[editable path="Paper"]
+[editable path="Scissors"]
