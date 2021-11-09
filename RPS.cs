@@ -40,7 +40,9 @@ public class RPS : Control{
     EmitSignal(nameof(_set_state), false);
   }
   //On disconnect, any lingering tasks should be removed.
-  public void _dc(){dc.Cancel();}
+  public void _dc(){dc.Cancel();
+  dc.Dispose();
+  dc = new CancellationTokenSource();}
   public void _Resolve(byte o){
     string message = "???";
     switch (o){

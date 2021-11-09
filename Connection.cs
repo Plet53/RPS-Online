@@ -34,9 +34,6 @@ public class Connection : Node
   #endregion
   public override void _Ready(){
     st = this.GetTree();
-    net = new NetworkedMultiplayerENet();
-    net.TransferMode = NetworkedMultiplayerENet.TransferModeEnum.Reliable;
-    net.AllowObjectDecoding = false;
     portcount = 0; port = 7777; host = up = lrm = false;
     target = "127.0.0.1";
     connect = GetNode<Control>(new NodePath("Connect"));
@@ -92,6 +89,9 @@ public class Connection : Node
   public void _establish(bool state){
     host = state;
     Error e;
+    net = new NetworkedMultiplayerENet();
+    net.TransferMode = NetworkedMultiplayerENet.TransferModeEnum.Reliable;
+    net.AllowObjectDecoding = false;
     if(state){e = net.CreateServer(port, 1);}
     else{e = net.CreateClient(target, port);}
     st.NetworkPeer = net;
@@ -120,6 +120,7 @@ public class Connection : Node
   }
   public void _s_disconnect(int d){_disconnect();}
   public void _disconnect(){
+    hb.Stop();
     st.NetworkPeer.Disconnect("connection_failed", this, nameof(_cfail));
     if(host){st.NetworkPeer.Disconnect("peer_disconnected", this, nameof(_s_disconnect));
       st.NetworkPeer.Disconnect("peer_connected", this, nameof(_s_connect));}
@@ -127,7 +128,7 @@ public class Connection : Node
       st.NetworkPeer.Disconnect("connection_succeeded", this, nameof(_connect));}
     dc.Cancel();
     net.CloseConnection();
-    hb.Stop();
+    net.Dispose();
     EmitSignal(nameof(_dc));
     lrm = false;
     bestof.Visible = false;
@@ -136,7 +137,8 @@ public class Connection : Node
     disconnect.Visible = false;
     results.Visible = false;
     connect.Visible = true;
-    net.RefuseNewConnections = false;
+    dc.Dispose();
+    dc = new CancellationTokenSource();
   }
   public void _send(byte info){
     byte[] b = {info};
@@ -199,7 +201,7 @@ public class Connection : Node
         while(!lrm){await Task.Delay(100);}
         rm.Visible = false;
         results.Visible = false;
-        _start();
+        bestof.Visible = true;
       }, dc.Token);}
     catch(System.Threading.Tasks.TaskCanceledException){}
   }
